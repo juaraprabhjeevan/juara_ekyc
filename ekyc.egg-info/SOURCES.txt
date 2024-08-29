@@ -1,0 +1,17 @@
+LICENSE
+README.md
+setup.py
+ekyc/__init__.py
+ekyc/core.py
+ekyc/document_verification.py
+ekyc/face_matching.py
+ekyc/face_processing.py
+ekyc/liveness_check.py
+ekyc/utils.py
+ekyc.egg-info/PKG-INFO
+ekyc.egg-info/SOURCES.txt
+ekyc.egg-info/dependency_links.txt
+ekyc.egg-info/requires.txt
+ekyc.egg-info/top_level.txt
+ekyc/data/ic_template.jpg
+ekyc/data/shape_predictor_68_face_landmarks.dat

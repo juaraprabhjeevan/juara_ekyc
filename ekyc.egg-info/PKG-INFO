@@ -1,0 +1,90 @@
+Metadata-Version: 2.1
+Name: ekyc
+Version: 0.0.1
+Summary: A library for electronic Know Your Customer (eKYC) verification
+Home-page: https://github.com/juaraprabhjeevan/juara_ekyc
+Author: Prabhjeevan Singh
+Author-email: prabhjeevan@juarapartners.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Juara eKYC Library
+
+Juara eKYC is a Python library for electronic Know Your Customer (eKYC) verification, including document verification, face processing, liveness detection, and face matching.
+
+## Features
+
+- Document verification
+- Face processing
+- Liveness check
+- Face matching
+- Flask-based API for eKYC verification
+
+## Prerequisites
+
+- Python 3.7+
+- OpenCV
+- NumPy
+- scikit-learn
+- deepface
+- paddleocr
+- Flask
+- dlib
+
+## Installation
+
+You can install the Juara eKYC library using pip:
+
+pip install juara_ekyc
+
+
+## Usage
+
+Here's a basic example of how to use the Juara eKYC library:
+
+python
+from juara_ekyc import process_id_verification
+result, message = process_id_verification('path/to/image.jpg')
+print(f"Verification result: {result}")
+print(f"Message: {message}")
+
+## Development
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/juara_ekyc.git
+   cd juara_ekyc
+   ```
+
+2. Create a virtual environment:
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+
+3. Install the development dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Run the tests:
+   ```
+   python -m unittest discover tests
+   ```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

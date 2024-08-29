@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="juara_ekyc",
+    name="ekyc",
     version="0.0.1",
     author="Prabhjeevan Singh",
     author_email="prabhjeevan@juarapartners.com",
@@ -34,7 +34,10 @@ setup(
         "dlib>=19.22.0",
     ],
     package_data={
-        'ekyc_lib': ['shape_predictor_68_face_landmarks.dat'],
+        'ekyc': [
+            'data/ic_template.jpg',
+            'data/shape_predictor_68_face_landmarks.dat',
+        ],
     },
     include_package_data=True,
 )

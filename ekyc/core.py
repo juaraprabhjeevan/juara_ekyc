@@ -2,6 +2,7 @@ import tempfile
 import os
 import base64
 import cv2
+import pkg_resources
 from .document_verification import verify_document
 from .face_processing import process_ic_face, mask_ic_face
 from .liveness_check import perform_liveness_check
@@ -10,7 +11,10 @@ from .utils import preprocess_image, get_base64_encoded_image, setup_logger
 
 logger = setup_logger(__name__)
 
-def process_id_verification(image_path, template_path='ic_template.jpg'):
+def process_id_verification(image_path, template_path=None):
+    if template_path is None:
+        template_path = pkg_resources.resource_filename('ekyc', 'data/ic_template.jpg')
+    
     logger.info("Starting ID verification process")
     TEMPLATE_IMAGE_BASE64 = get_base64_encoded_image(template_path)
     
