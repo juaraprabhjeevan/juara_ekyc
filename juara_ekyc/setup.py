@@ -4,14 +4,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="ekyc_lib",
+    name="juara_ekyc",
     version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="Prabhjeevan Singh",
+    author_email="email-associated-with-juaraprabhjeevan@example.com",
     description="A library for electronic Know Your Customer (eKYC) verification",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/ekyc_lib",
+    url="https://github.com/juaraprabhjeevan/juara_ekyc",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
