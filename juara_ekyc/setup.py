@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="juara_ekyc",
-    version="0.1.0",
+    version="0.0.1",
     author="Prabhjeevan Singh",
     author_email="prabhjeevan@juarapartners.com",
     description="A library for electronic Know Your Customer (eKYC) verification",
