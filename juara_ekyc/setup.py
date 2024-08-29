@@ -7,7 +7,7 @@ setup(
     name="juara_ekyc",
     version="0.1.0",
     author="Prabhjeevan Singh",
-    author_email="email-associated-with-juaraprabhjeevan@example.com",
+    author_email="prabhjeevan@juarapartners.com",
     description="A library for electronic Know Your Customer (eKYC) verification",
     long_description=long_description,
     long_description_content_type="text/markdown",
