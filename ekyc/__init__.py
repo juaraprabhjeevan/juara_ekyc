@@ -20,4 +20,4 @@ __all__ = [
     'setup_logger'
 ]
 
-__version__ = '0.1.0'
+__version__ = "0.0.5"

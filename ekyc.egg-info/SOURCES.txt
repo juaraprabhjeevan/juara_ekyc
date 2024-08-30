@@ -1,5 +1,7 @@
 LICENSE
+MANIFEST.in
 README.md
+setup.cfg
 setup.py
 ekyc/__init__.py
 ekyc/core.py
@@ -15,3 +17,9 @@ ekyc.egg-info/requires.txt
 ekyc.egg-info/top_level.txt
 ekyc/data/ic_template.jpg
 ekyc/data/shape_predictor_68_face_landmarks.dat
+wheels/dlib-19.22.99-cp310-cp310-win_amd64.whl
+wheels/dlib-19.22.99-cp37-cp37m-win_amd64.whl
+wheels/dlib-19.22.99-cp38-cp38-win_amd64.whl
+wheels/dlib-19.22.99-cp39-cp39-win_amd64.whl
+wheels/dlib-19.24.1-cp311-cp311-win_amd64.whl
+wheels/dlib-19.24.99-cp312-cp312-win_amd64.whl

@@ -1,12 +1,14 @@
 import cv2
 import dlib
+import pkg_resources
 from .utils import setup_logger
 
 logger = setup_logger(__name__)
 
 # Load the face detector and shape predictor
 face_detector = dlib.get_frontal_face_detector()
-shape_predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+predictor_path = pkg_resources.resource_filename('ekyc', 'data/shape_predictor_68_face_landmarks.dat')
+shape_predictor = dlib.shape_predictor(predictor_path)
 
 def process_ic_face(image, ic_bbox):
     logger.info("Processing IC face")

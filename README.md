@@ -23,7 +23,36 @@ Juara eKYC is a Python library for electronic Know Your Customer (eKYC) verifica
 
 ## Installation
 
-You can install the Juara eKYC library using pip:
+### For Windows Users:
+
+1. Ensure you have CMake installed. You can download it from [cmake.org](https://cmake.org/download/).
+
+2. Uninstall any previous versions:
+   ```
+   pip uninstall ekyc
+   ```
+
+3. Clear pip cache:
+   ```
+   pip cache purge
+   ```
+
+4. Install the package:
+   ```
+   pip install path/to/ekyc-0.0.4-py3-none-any.whl
+   ```
+
+   Note: This will automatically install the correct dlib version for your Python installation.
+
+5. You may need to install PaddleOCR and PaddlePaddle separately:
+   ```
+   pip install paddlepaddle
+   pip install paddleocr
+   ```
+
+### For Other Operating Systems:
+
+You can install the eKYC library using pip:
 
 pip install juara_ekyc
 
