@@ -54,7 +54,7 @@ ekyc = [
 
 [tool.setuptools_scm]
 write_to = "ekyc/_version.py"
-version_scheme = "post-release"
+version_scheme = "no-guess-dev"
 local_scheme = "no-local-version"
 
 [tool.pytest.ini_options]
