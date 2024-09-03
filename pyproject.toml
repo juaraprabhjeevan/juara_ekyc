@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ekyc"
+dynamic = ["version"]
+description = "A library for electronic Know Your Customer (eKYC) verification"
+readme = "README.md"
+authors = [{name = "Prabhjeevan Singh", email = "prabhjeevan@juarapartners.com"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = ["eKYC", "verification", "identity"]
+dependencies = [
+    "opencv-python",
+    "numpy",
+    "scikit-learn",
+    "deepface",
+    "Flask",
+    "paddlepaddle==2.6.1",
+    "paddleocr==2.8.1",
+    "tensorflow==2.11.0",
+    "protobuf==3.19.6",
+    "dlib>=19.22.0; platform_system != 'Windows'",
+    "torch",
+]
+requires-python = ">=3.9, <3.13"
+
+[project.optional-dependencies]
+dev = ["pytest", "flake8"]
+
+[project.urls]
+Homepage = "https://github.com/juaraprabhjeevan/juara_ekyc"
+"Bug Tracker" = "https://github.com/juaraprabhjeevan/juara_ekyc/issues"
+
+[tool.setuptools]
+packages = ["ekyc"]
+
+[tool.setuptools.package-data]
+ekyc = [
+    "data/ic_template.jpg",
+    "data/shape_predictor_68_face_landmarks.dat",
+]
+
+[tool.setuptools_scm]
+write_to = "ekyc/_version.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.flake8]
+max-line-length = 120

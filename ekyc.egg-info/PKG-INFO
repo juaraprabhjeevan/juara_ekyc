@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: ekyc
-Version: 0.0.5
+Version: 0.0.7
 Summary: A library for electronic Know Your Customer (eKYC) verification
 Home-page: https://github.com/juaraprabhjeevan/juara_ekyc
 Author: Prabhjeevan Singh
@@ -15,7 +15,7 @@ Classifier: Programming Language :: Python :: 3.8
 Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Programming Language :: Python :: 3.11
-Requires-Python: >=3.7
+Requires-Python: >=3.9, <3.12
 Description-Content-Type: text/markdown
 License-File: LICENSE
 

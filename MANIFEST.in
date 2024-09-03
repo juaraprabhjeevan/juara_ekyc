@@ -1,5 +1,6 @@
-include setup.cfg
 include README.md
 include LICENSE
 recursive-include ekyc/data *
 recursive-include wheels *.whl
+include requirements.txt
+# Add any other files or patterns that should be included in your distribution

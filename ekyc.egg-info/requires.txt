@@ -1,8 +1,9 @@
-opencv-python>=4.5.0
-numpy>=1.19.0
-scikit-learn>=0.24.0
-deepface>=0.0.93
-Flask>=2.0.0
-paddleocr>=2.0.6
-paddlepaddle>=2.0.0
+opencv-python
+numpy
+scikit-learn
+deepface
+Flask
+paddlepaddle==2.6.1
+tensorflow==2.11.0
+protobuf==3.19.6
 dlib>=19.22.0
