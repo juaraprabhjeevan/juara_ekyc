@@ -20,6 +20,7 @@ ekyc.egg-info/requires.txt
 ekyc.egg-info/top_level.txt
 ekyc/__pycache__/__init__.cpython-311.pyc
 ekyc/__pycache__/__init__.cpython-312.pyc
+ekyc/__pycache__/_version.cpython-311.pyc
 ekyc/__pycache__/core.cpython-311.pyc
 ekyc/__pycache__/core.cpython-312.pyc
 ekyc/__pycache__/document_verification.cpython-311.pyc

@@ -38,7 +38,7 @@ def process_id_verification(image_path, template_path=None):
         logger.warning("Failed to detect a suitable face for IC")
         return False, "Failed to detect a suitable face for IC."
     
-    masked_image = mask_all_faces_except_largest(image, ic_face_location)
+    masked_image = mask_all_faces_except_largest(image)
     is_live = perform_liveness_check(masked_image)
     if not is_live:
         logger.warning("Liveness check failed")
