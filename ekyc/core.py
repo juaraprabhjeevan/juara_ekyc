@@ -4,7 +4,7 @@ import base64
 import cv2
 import pkg_resources
 from .document_verification import verify_document
-from .face_processing import process_ic_face, mask_ic_face
+from .face_processing import process_ic_face, mask_all_faces_except_largest
 from .liveness_check import perform_liveness_check
 from .face_matching import match_faces
 from .utils import preprocess_image, get_base64_encoded_image, setup_logger
@@ -38,7 +38,7 @@ def process_id_verification(image_path, template_path=None):
         logger.warning("Failed to detect a suitable face for IC")
         return False, "Failed to detect a suitable face for IC."
     
-    masked_image = mask_ic_face(image, ic_face_location)
+    masked_image = mask_all_faces_except_largest(image, ic_face_location)
     is_live = perform_liveness_check(masked_image)
     if not is_live:
         logger.warning("Liveness check failed")
