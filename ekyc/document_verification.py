@@ -1,13 +1,9 @@
 import cv2
 import numpy as np
 from paddleocr import PaddleOCR
-from .utils import setup_logger, analyze_background_color
-
-logger = setup_logger(__name__)
+from .utils import analyze_background_color
 
 def verify_document(image_path, template_path):
-    logger.info("Performing document verification")
-    
     def preprocess_image_for_verification(image_path):
         return cv2.imread(image_path, 0)
     

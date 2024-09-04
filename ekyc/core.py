@@ -4,21 +4,17 @@ import base64
 import cv2
 import pkg_resources
 from .document_verification import verify_document
-from .face_processing import process_ic_face, mask_all_faces_except_largest
 from .liveness_check import perform_liveness_check
+from .face_processing import get_ic_face, mask_ic_and_smaller_faces, detect_face, preprocessImage
 from .face_matching import match_faces
-from .utils import preprocess_image, get_base64_encoded_image, setup_logger
-
-logger = setup_logger(__name__)
+from .utils import preprocess_image, get_base64_encoded_image
 
 def process_id_verification(image_path, template_path=None):
     if template_path is None:
         template_path = pkg_resources.resource_filename('ekyc', 'data/ic_template.jpg')
     
-    logger.info("Starting ID verification process")
     TEMPLATE_IMAGE_BASE64 = get_base64_encoded_image(template_path)
     
-    # Decode the embedded template image
     template_image_data = base64.b64decode(TEMPLATE_IMAGE_BASE64)
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as template_temp:
         template_temp.write(template_image_data)
@@ -28,36 +24,65 @@ def process_id_verification(image_path, template_path=None):
     
     os.unlink(template_temp.name)
     
+    results = {
+        "document_verification": {
+            "is_verified": is_verified,
+            "ic_bbox": ic_bbox
+        }
+    }
+
     if not is_verified:
-        logger.warning("Document verification failed")
-        return False, "Document verification failed."
-    
+        results["final_result"] = False
+        results["final_message"] = "Document verification failed."
+        return results
+
     image = preprocess_image(image_path)
-    ic_face_image, ic_face_location = process_ic_face(image, ic_bbox)
-    if ic_face_image is None or ic_face_location is None:
-        logger.warning("Failed to detect a suitable face for IC")
-        return False, "Failed to detect a suitable face for IC."
-    
-    masked_image = mask_all_faces_except_largest(image)
+
+    ic_face_image, ic_face_bbox = get_ic_face(image)
+    results["face_processing"] = {
+        "ic_face_detected": ic_face_image is not None and ic_face_bbox is not None,
+        "ic_face_bbox": ic_face_bbox
+    }
+
+    if ic_face_image is None or ic_face_bbox is None:
+        results["final_result"] = False
+        results["final_message"] = "Failed to detect a suitable face for IC."
+        return results
+
+    masked_image = mask_ic_and_smaller_faces(image)
+
     is_live = perform_liveness_check(masked_image)
+    results["liveness_check"] = {
+        "is_live": is_live
+    }
+
     if not is_live:
-        logger.warning("Liveness check failed")
-        return False, "Liveness check failed. The user's face might be spoofed."
+        results["final_result"] = False
+        results["final_message"] = "Liveness check failed. The user's face might be spoofed."
+        return results
     
-    gray = cv2.cvtColor(masked_image, cv2.COLOR_RGB2GRAY)
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-    if len(faces) == 0:
-        logger.warning("No face detected in the image after masking IC")
-        return False, "No face detected in the image after masking IC."
+    user_face_image = detect_face(masked_image)
+    results["face_processing"]["user_face_detected"] = user_face_image is not None
+
+    if user_face_image is None:
+        results["final_result"] = False
+        results["final_message"] = "No face detected in the image after masking IC."
+        return results
     
-    (x, y, w, h) = faces[0]
-    user_face_image = masked_image[y:y+h, x:x+w]
+    user_face_image = preprocessImage(user_face_image)
+    ic_face_image = preprocessImage(ic_face_image)
     
     faces_match, explanation = match_faces(user_face_image, ic_face_image)
+    results["face_matching"] = {
+        "faces_match": faces_match,
+        "explanation": explanation
+    }
+
     if faces_match:
-        logger.info("Face matching successful")
-        return True, "Face matching successful. Ready for API call."
+        results["final_result"] = True
+        results["final_message"] = "Face matching successful. Ready for API call."
     else:
-        logger.warning(f"Face matching failed: {explanation}")
-        return False, f"Face matching failed. {explanation}"
+        results["final_result"] = False
+        results["final_message"] = f"Face matching failed. {explanation}"
+
+    return results

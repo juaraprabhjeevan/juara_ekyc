@@ -3,13 +3,8 @@ import tempfile
 import os
 import time
 from deepface import DeepFace
-from .utils import setup_logger
-
-logger = setup_logger(__name__)
 
 def match_faces(user_face_image, ic_face_image):
-    logger.info("Matching faces")
-    
     user_file = None
     ic_file = None
     
@@ -27,7 +22,6 @@ def match_faces(user_face_image, ic_face_image):
         explanation = f"Faces matched with a distance of {distance:.4f}."
         return match_result, explanation
     except Exception as e:
-        logger.error(f"Error during face matching: {str(e)}")
         return False, f"Face matching failed: {str(e)}"
     finally:
         if user_file:
@@ -35,15 +29,13 @@ def match_faces(user_face_image, ic_face_image):
         if ic_file:
             ic_file.close()
         
-        # Attempt to remove temporary files with retry
         for file in [user_file, ic_file]:
             if file:
-                for _ in range(5):  # Try 5 times
+                for _ in range(5):
                     try:
                         os.unlink(file.name)
                         break
                     except PermissionError:
-                        time.sleep(0.1)  # Wait a bit before retrying
-                    except Exception as e:
-                        logger.warning(f"Failed to remove temporary file {file.name}: {str(e)}")
+                        time.sleep(0.1)
+                    except Exception:
                         break
