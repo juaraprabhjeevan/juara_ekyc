@@ -3,6 +3,7 @@ import cv2
 import base64
 import numpy as np
 from sklearn.cluster import KMeans
+import os
 
 def setup_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
@@ -20,7 +21,7 @@ def preprocess_image(image_path):
     image = cv2.imread(image_path)
     if image is None:
         raise ValueError(f"Failed to load image from {image_path}")
-    return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return image  # Return the image as-is, without any color conversion
 
 def get_base64_encoded_image(image_path):
     with open(image_path, "rb") as image_file:
@@ -44,3 +45,9 @@ def analyze_background_color(image):
             if max(color) - min(color) <= 20 and color[2] >= color[0]:
                 return True
     return False
+
+def log_image(image, filename):
+    log_dir = "ekyc_logs"
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    cv2.imwrite(os.path.join(log_dir, filename), image)

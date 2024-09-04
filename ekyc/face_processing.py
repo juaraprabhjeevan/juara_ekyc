@@ -1,52 +1,49 @@
 import cv2
 import dlib
+import numpy as np
 import pkg_resources
-from .utils import setup_logger
 
-logger = setup_logger(__name__)
-
-# Load the face detector and shape predictor
 face_detector = dlib.get_frontal_face_detector()
 predictor_path = pkg_resources.resource_filename('ekyc', 'data/shape_predictor_68_face_landmarks.dat')
 shape_predictor = dlib.shape_predictor(predictor_path)
 
-def process_ic_face(image, ic_bbox):
-    logger.info("Processing IC face")
-    x, y, w, h = ic_bbox
-    x, y = max(0, x), max(0, y)
-    w, h = min(w, image.shape[1] - x), min(h, image.shape[0] - y)
-    
-    if w <= 0 or h <= 0:
-        return None, None
-    
-    ic_roi = image[y:y+h, x:x+w]
-    if ic_roi.size == 0:
-        return None, None
-    
-    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+def detect_and_sort_faces(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = face_detector(gray)
+    return sorted(faces, key=lambda f: (f.bottom()-f.top())*(f.right()-f.left()), reverse=True)
+
+def get_ic_face(image):
+    sorted_faces = detect_and_sort_faces(image)
     
-    if len(faces) == 0:
+    if len(sorted_faces) < 2:
         return None, None
     
-    if len(faces) == 1:
-        face = faces[0]
-        if (x < face.left() < x+w) and (y < face.top() < y+h):
-            return image[face.top():face.bottom(), face.left():face.right()], (face.top(), face.right(), face.bottom(), face.left())
-        else:
-            return None, None
-    
-    faces = sorted(faces, key=lambda f: (f.bottom()-f.top())*(f.right()-f.left()))
-    for face in faces:
-        if (x < face.left() < x+w or x < face.right() < x+w) and (y < face.top() < y+h or y < face.bottom() < y+h):
-            return image[face.top():face.bottom(), face.left():face.right()], (face.top(), face.right(), face.bottom(), face.left())
-    
-    face = faces[0]
-    return image[face.top():face.bottom(), face.left():face.right()], (face.top(), face.right(), face.bottom(), face.left())
+    ic_face = sorted_faces[1]
+    ic_face_image = image[ic_face.top():ic_face.bottom(), ic_face.left():ic_face.right()]
+    return ic_face_image, (ic_face.left(), ic_face.top(), ic_face.right() - ic_face.left(), ic_face.bottom() - ic_face.top())
 
-def mask_ic_face(image, ic_face_location):
-    logger.info("Masking IC face")
+def mask_ic_and_smaller_faces(image):
     masked_image = image.copy()
-    top, right, bottom, left = ic_face_location
-    cv2.rectangle(masked_image, (left, top), (right, bottom), (0, 0, 0), -1)
+    sorted_faces = detect_and_sort_faces(image)
+    
+    if len(sorted_faces) < 2:
+        return masked_image
+    
+    for face in sorted_faces[1:]:
+        cv2.rectangle(masked_image, (face.left(), face.top()), (face.right(), face.bottom()), (255, 255, 255), -1)
+    
     return masked_image
+
+def preprocessImage(image):
+    return cv2.resize(image, (224, 224))
+
+def detect_face(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    faces = face_detector(gray)
+    if len(faces) > 0:
+        face = faces[0]
+        x, y, w, h = face.left(), face.top(), face.width(), face.height()
+        face_image = image[y:y+h, x:x+w]
+        return face_image
+    else:
+        return None
