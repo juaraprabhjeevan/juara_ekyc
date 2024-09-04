@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ekyc"
-dynamic = ["version"]
+version = "0.1.10" 
 description = "A library for electronic Know Your Customer (eKYC) verification"
 readme = "README.md"
 authors = [{name = "Prabhjeevan Singh", email = "prabhjeevan@juarapartners.com"}]
@@ -52,10 +52,7 @@ ekyc = [
     "data/shape_predictor_68_face_landmarks.dat",
 ]
 
-[tool.setuptools_scm]
-write_to = "ekyc/_version.py"
-version_scheme = "no-guess-dev"
-local_scheme = "no-local-version"
+
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
