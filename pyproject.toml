@@ -54,7 +54,7 @@ ekyc = [
 
 [tool.setuptools_scm]
 write_to = "ekyc/_version.py"
-
+version = "0.1.6"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
