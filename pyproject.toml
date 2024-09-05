@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ekyc"
-version = "0.1.14" 
+version = "0.1.15" 
 description = "A library for electronic Know Your Customer (eKYC) verification"
 readme = "README.md"
 authors = [{name = "Prabhjeevan Singh", email = "prabhjeevan@juarapartners.com"}]
@@ -32,7 +32,6 @@ dependencies = [
     "tensorflow==2.11.0",
     "protobuf==3.19.6",
     "dlib>=19.22.0; platform_system != 'Windows'",
-    "torch",
 ]
 requires-python = ">=3.9, <3.13"
 
