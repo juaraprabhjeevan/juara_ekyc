@@ -3,6 +3,7 @@ import tempfile
 import os
 from deepface import DeepFace
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +17,9 @@ def perform_liveness_check(image):
         # Write the image to the temporary file
         cv2.imwrite(temp_file.name, image)
         logger.info(f"Image written to temporary file")
+
+        # Close the file to ensure it's not held open
+        temp_file.close()
 
         # Perform face extraction with anti-spoofing
         face_objs = DeepFace.extract_faces(img_path=temp_file.name, anti_spoofing=True, enforce_detection=False)
@@ -31,22 +35,18 @@ def perform_liveness_check(image):
 
         return is_live
 
-    except cv2.error as e:
-        logger.error(f"OpenCV error during liveness check: {str(e)}")
-        return False
-    except IOError as e:
-        logger.error(f"I/O error during liveness check: {str(e)}")
-        return False
-    except ValueError as e:
-        logger.error(f"Value error during liveness check: {str(e)}")
-        return False
     except Exception as e:
-        logger.error(f"Unexpected error during liveness check: {str(e)}")
+        logger.error(f"Error during liveness check: {str(e)}")
         return False
     finally:
         if temp_file:
-            try:
-                os.unlink(temp_file.name)
-                logger.info(f"Temporary file deleted: {temp_file.name}")
-            except Exception as e:
-                logger.error(f"Error deleting temporary file: {str(e)}")
+            for _ in range(5):  # Try 5 times
+                try:
+                    os.unlink(temp_file.name)
+                    logger.info(f"Temporary file deleted: {temp_file.name}")
+                    break
+                except Exception as e:
+                    logger.warning(f"Error deleting temporary file: {str(e)}. Retrying...")
+                    time.sleep(0.5)  # Wait for 500ms before retrying
+            else:
+                logger.error(f"Failed to delete temporary file after 5 attempts: {temp_file.name}")
